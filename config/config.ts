@@ -3,6 +3,8 @@ export const Colors = {
   secondary: '#f31260',
   background: '#f7f8fd',
   white: '#ffffff',
+  coalBlack: '#221F20',
+  lightGray: '#757575',
 };
 
 export const spacing = {
@@ -33,4 +35,5 @@ export const spacing = {
 
 export const shadow = {
   sidebar: '8px 4px 16px rgba(92, 116, 222, 0.1)',
+  editor: '8px 4px 16px rgba(92, 116, 222, 0.1), -8px -4px 16px rgba(92, 116, 222, 0.1)',
 };
