@@ -3,11 +3,13 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import NextHead from 'next/head';
 import { useRouter } from 'next/router';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Layout from '@Components/Layout/Layout';
 import { TranslationContextProvider } from '@Context/TranslationContext';
+import { apiInstance } from '@Utils/api';
 import { getI18nConfig, Language } from '@Utils/i18n';
 
 const globalStyles = css`
@@ -69,17 +71,37 @@ interface MyAppProps extends AppProps<PageProps> {
 }
 
 function MyApp({ Component, pageProps }: MyAppProps) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false,
+            refetchOnWindowFocus: false,
+          },
+          mutations: {
+            retry: false,
+          },
+        },
+      }),
+  );
   const getLayout = Component.getLayout ?? ((page) => page);
   const router = useRouter();
   const locale = router.locale as Language;
 
+  apiInstance.get('/api/dictionary').then((res) => {
+    console.log(res);
+  });
+
   return (
     <I18nextProvider i18n={getI18nConfig(locale)}>
       <Global styles={globalStyles} />
-      <TranslationContextProvider>
-        <Head />
-        <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
-      </TranslationContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <TranslationContextProvider>
+          <Head />
+          <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
+        </TranslationContextProvider>
+      </QueryClientProvider>
     </I18nextProvider>
   );
 }

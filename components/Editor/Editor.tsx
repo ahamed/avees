@@ -170,11 +170,11 @@ const Editor = () => {
   const [doTranslate, setDoTranslate] = useState(false);
   const [structures, setStructures] = useState<WordStructure[]>([]);
 
-  useEffect(() => {
-    if (doTranslate) {
-      setStructures(parseValueToStructure(value));
-    }
-  }, [value, doTranslate]);
+  // useEffect(() => {
+  //   if (doTranslate) {
+  //     setStructures(parseValueToStructure(value));
+  //   }
+  // }, [value, doTranslate]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     const element = event.currentTarget;
